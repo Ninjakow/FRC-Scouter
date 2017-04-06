@@ -87,6 +87,6 @@ while True:
 		print ("")
 		print ("%s. %s - %s \nAuto: %s \nClimb: %s \nGear: %s \nShooting: %s" %(item[0], item[1], team_names[item[1]],
 		stats.percentileofscore(auto, item[4]), stats.percentileofscore(climb, item[6]),
-		stats.percentileofscore(gear, [5]), stats.percentileofscore(balls, item[7])))
+		stats.percentileofscore(gear, item[5]), stats.percentileofscore(balls, item[7])))
 
 quit()
