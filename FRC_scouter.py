@@ -66,17 +66,25 @@ while True:
 					can_balls = True
 				elif skill == 'Yes':
 					can_auto = True
-		except:
-			pass
-		
+		except KeyError:
+			print("Missing info for "+ str(item[1]))
+
 		if can_auto:
 			auto.append(item[4])
+		else:
+			item[4] = ""
 		if can_climb:
 			climb.append(item[6])
+		else:
+			item[6] = ""
 		if can_gear:
 			gear.append(item[5])
+		else:
+			item[5] = ""
 		if can_balls:
 			balls.append(item[7])
+		else:
+			item[7] = ""
 
 	for item in rankings:
 		if item[0] == 'Rank':
@@ -85,7 +93,7 @@ while True:
 			if team_key != str(item[1]):
 				continue
 		print ("")
-		print ("%s. %s - %s \nAuto: %s \nClimb: %s \nGear: %s \nShooting: %s" %(item[0], item[1], team_names[item[1]],
+		print ("%s. %s - %s \nAuto: %s \nClimb: %s \nGear: %s \nBalls: %s" %(item[0], item[1], team_names[item[1]],
 		stats.percentileofscore(auto, item[4]), stats.percentileofscore(climb, item[6]),
 		stats.percentileofscore(gear, item[5]), stats.percentileofscore(balls, item[7])))
 
