@@ -4,7 +4,6 @@ from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
-
 # pylint: disable=W0312,C0325,C0103,C0301,C0330
 
 team_names = {}
@@ -46,53 +45,55 @@ auto = []
 climb = []
 gear = []
 balls = []
+
+trueskill_score = requests.get("http://trueskill-trueskill-4774.44fs.preview.openshiftapps.com/api/trueskills/"+event_key).json()
+for team in trueskill_score:
+	trueskills[team[1]] = team[0]
+
+for item in rankings:
+	can_climb = False
+	can_gear = False
+	can_balls = False
+	can_auto = False
+
+	if item[0] == 'Rank':
+		continue
+
+	try:
+		for skill in abilities[str(item[1])]:
+			if skill == "Gear":
+				can_gear = True
+			elif skill == "Climber":
+				can_climb = True
+			elif skill == "Shooter" or skill == "Loader":
+				can_balls = True
+			elif skill == 'Yes':
+				can_auto = True
+	except KeyError:
+		print("Missing info for "+ str(item[1]))
+
+	if can_auto:
+		auto.append(item[4])
+	else:
+		item[4] = ""
+	if can_climb:
+		climb.append(item[6])
+	else:
+		item[6] = ""
+	if can_gear:
+		gear.append(item[5])
+	else:
+		item[5] = ""
+	if can_balls:
+		balls.append(item[7])
+	else:
+		item[7] = ""
+
 while True:
 	print ("Enter Team Number or ENTER for all:")
 	team_key = input()
 	if team_key == "q":
 		break
-
-	for item in rankings:
-		can_climb = False
-		can_gear = False
-		can_balls = False
-		can_auto = False
-
-		if item[0] == 'Rank':
-			continue
-		trueskill_score = requests.get("http://trueskill-trueskill-4774.44fs.preview.openshiftapps.com/api/trueskill/"+str(item[1]))
-		trueskill_score = trueskill_score.json()
-		trueskills[item[1]] = trueskill_score
-
-		try:
-			for skill in abilities[str(item[1])]:
-				if skill == "Gear":
-					can_gear = True
-				elif skill == "Climber":
-					can_climb = True
-				elif skill == "Shooter" or skill == "Loader":
-					can_balls = True
-				elif skill == 'Yes':
-					can_auto = True
-		except KeyError:
-			print("Missing info for "+ str(item[1]))
-
-		if can_auto:
-			auto.append(item[4])
-		else:
-			item[4] = ""
-		if can_climb:
-			climb.append(item[6])
-		else:
-			item[6] = ""
-		if can_gear:
-			gear.append(item[5])
-		else:
-			item[5] = ""
-		if can_balls:
-			balls.append(item[7])
-		else:
-			item[7] = ""
 
 	for item in rankings:
 		if item[0] == 'Rank':
