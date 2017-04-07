@@ -13,8 +13,13 @@ trueskills = {}
 with open('Calgary_Scouting.csv', newline='') as csvfile:
 	reader = csv.DictReader(csvfile)
 	for row in reader:
-		abilities[row["Team number"]] = row["What can it do?"].split(";")
-		abilities[row["Team number"]].append(row["Does it have auto?"])
+		abilities[row["Team number"]] = dict([("What can it do?", row["What can it do?"].split(";"))])
+		abilities[row["Team number"]]["What can it do?"].append(row["Does it have auto?"])
+		abilities[row["Team number"]]["Gear Pickup"] = row["Gear Pickup"].split(";")
+		abilities[row["Team number"]]["Gear Placement"] = row["Gear Placement"]
+		abilities[row["Team number"]]["Ball Pickup"] = row["Ball Pickup"].split(";")
+		abilities[row["Team number"]]["Auto Abilities"] = row["Auto Abilities"].split(";")
+		abilities[row["Team number"]]["Movement Type"] = row["Movement Type"]
 
 print ("Enter Event Key:")
 event_key = input().lower()
@@ -60,7 +65,7 @@ for item in rankings:
 		continue
 
 	try:
-		for skill in abilities[str(item[1])]:
+		for skill in abilities[str(item[1])]["What can it do?"]:
 			if skill == "Gear":
 				can_gear = True
 			elif skill == "Climber":
