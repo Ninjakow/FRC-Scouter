@@ -6,6 +6,7 @@ from scipy import stats
 
 team_names = {}
 abilities = {}
+trueskills = {}
 
 with open('Calgary_Scouting.csv', newline='') as csvfile:
 	reader = csv.DictReader(csvfile)
@@ -56,6 +57,10 @@ while True:
 
 		if item[0] == 'Rank':
 			continue
+		trueskill_score = requests.get("http://trueskill-trueskill-4774.44fs.preview.openshiftapps.com/api/trueskill/"+str(item[1]))
+		trueskill_score = trueskill_score.json()
+		trueskills[item[1]] = trueskill_score
+
 		try:
 			for skill in abilities[str(item[1])]:
 				if skill == "Gear":
@@ -93,7 +98,7 @@ while True:
 			if team_key != str(item[1]):
 				continue
 		print ("")
-		print ("%s. %s - %s \nAuto: %s \nClimb: %s \nGear: %s \nBalls: %s" %(item[0], item[1], team_names[item[1]],
+		print ("%s. %s - %s (%s) \nAuto: %s \nClimb: %s \nGear: %s \nBalls: %s" %(item[0], item[1], team_names[item[1]], (round(trueskills[item[1]]*100)/100),
 		stats.percentileofscore(auto, item[4]), stats.percentileofscore(climb, item[6]),
 		stats.percentileofscore(gear, item[5]), stats.percentileofscore(balls, item[7])))
 
