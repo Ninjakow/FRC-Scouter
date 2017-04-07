@@ -1,6 +1,9 @@
 import requests
 import csv
 from scipy import stats
+import warnings
+warnings.filterwarnings('ignore')
+
 
 # pylint: disable=W0312,C0325,C0103,C0301,C0330
 
