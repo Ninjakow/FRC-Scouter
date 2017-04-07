@@ -76,6 +76,7 @@ for item in rankings:
 				can_auto = True
 	except KeyError:
 		print("Missing info for "+ str(item[1]))
+		abilities[str(item[1])] = "Missing"
 
 	if can_auto:
 		auto.append(item[4])
@@ -106,9 +107,15 @@ while True:
 		if len(team_key) > 0:
 			if team_key != str(item[1]):
 				continue
+		if isinstance(abilities[str(item[1])], str):
+			continue
+
 		print ("")
-		print ("%s. %s - %s (%s) \nAuto: %s \nClimb: %s \nGear: %s \nBalls: %s" %(item[0], item[1], team_names[item[1]], (round(trueskills[item[1]]*100)/100),
-		stats.percentileofscore(auto, item[4]), stats.percentileofscore(climb, item[6]),
-		stats.percentileofscore(gear, item[5]), stats.percentileofscore(balls, item[7])))
+		print ("%s. %s - %s (%s) \nAuto: %s - %s \nClimb: %s \nGear: %s - %s - %s Placement \nBalls: %s - %s \n%s" %(item[0], item[1], team_names[item[1]], (round(trueskills[item[1]]*100)/100),
+		stats.percentileofscore(auto, item[4]), ", ".join(abilities[str(item[1])]["Auto Abilities"]), 
+		stats.percentileofscore(climb, item[6]), 
+		stats.percentileofscore(gear, item[5]), ", ".join(abilities[str(item[1])]["Gear Pickup"]), abilities[str(item[1])]["Gear Placement"], 
+		stats.percentileofscore(balls, item[7]), ", ".join(abilities[str(item[1])]["Ball Pickup"]),
+		abilities[str(item[1])]["Movement Type"]))
 
 quit()
