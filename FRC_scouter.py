@@ -16,16 +16,21 @@ event_key = "2017"+event_key
 if event_key == 'q':
 	quit()
 
-with open("Scouting_Data/"+event_key+'.csv', newline='') as csvfile:
-	reader = csv.DictReader(csvfile)
-	for row in reader:
-		abilities[row["Team number"]] = dict([("What can it do?", row["What can it do?"].split(";"))])
-		abilities[row["Team number"]]["What can it do?"].append(row["Does it have auto?"])
-		abilities[row["Team number"]]["Gear Pickup"] = row["Gear Pickup"].split(";")
-		abilities[row["Team number"]]["Gear Placement"] = row["Gear Placement"]
-		abilities[row["Team number"]]["Ball Pickup"] = row["Ball Pickup"].split(";")
-		abilities[row["Team number"]]["Auto Abilities"] = row["Auto Abilities"].split(";")
-		abilities[row["Team number"]]["Movement Type"] = row["Movement Type"]
+try:
+	with open("Scouting_Data/"+event_key+'.csv', newline='') as csvfile:
+		reader = csv.DictReader(csvfile)
+		for row in reader:
+			abilities[row["Team number"]] = dict([("What can it do?", row["What can it do?"].split(";"))])
+			abilities[row["Team number"]]["What can it do?"].append(row["Does it have auto?"])
+			abilities[row["Team number"]]["Gear Pickup"] = row["Gear Pickup"].split(";")
+			abilities[row["Team number"]]["Gear Placement"] = row["Gear Placement"]
+			abilities[row["Team number"]]["Ball Pickup"] = row["Ball Pickup"].split(";")
+			abilities[row["Team number"]]["Auto Abilities"] = row["Auto Abilities"].split(";")
+			abilities[row["Team number"]]["Movement Type"] = row["Movement Type"]
+except FileNotFoundError:
+	print("Scouting_Data/"+event_key+'.csv not found')
+	quit()
+
 
 rankings = requests.get("https://www.thebluealliance.com/api/v2/event/"+event_key+"/rankings", headers={"X-TBA-App-Id":"frc-4774:FRC_auto_scouter:1.0"})
 rankings = rankings.json()
